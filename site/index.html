@@ -8,9 +8,9 @@
 </head>
 <body>
   <header class="hero">
-    <p class="eyebrow">⚠ Intentionally vulnerable demo</p>
+    <p class="eyebrow">Dependency security demo</p>
     <h1>GHAS&nbsp;<span class="accent">Me&nbsp;Up</span></h1>
-    <p class="lede">One tiny site, built three ways. Every build ships stale dependencies.
+    <p class="lede">One tiny site, built three ways. Every build uses stale dependencies.
       GitHub finds them before you do.</p>
   </header>
 
@@ -42,7 +42,7 @@
 
     <section>
       <h2>Runtime</h2>
-      <p class="sub">This page is live. Try to break it.</p>
+      <p class="sub">Share a personalized greeting using the URL.</p>
       <div class="panel">
         <p id="greeting" class="greeting">Hello, friend!</p>
         <form id="hello-form" autocomplete="off">
@@ -50,8 +50,7 @@
           <input id="name" type="text" placeholder="Ada Lovelace">
           <button type="submit">Say hello</button>
         </form>
-        <p class="hint">The name round-trips through <code>location.hash</code> into jQuery 3.4.1
-          <code>.html()</code>. CodeQL sees the whole data flow.</p>
+        <p class="hint">The name is stored in the URL fragment and displayed as plain text.</p>
       </div>
     </section>
 
@@ -68,11 +67,10 @@
   </main>
 
   <footer>
-    <p>Source: <a href="https://github.com/artofthepossible/ghas-me-up">artofthepossible/ghas-me-up</a>
-      &middot; Do not deploy anything like this for real.</p>
+    <p>Source: <a href="https://github.com/epabishai/ghas-me-up">epabishai/ghas-me-up</a>
+      &middot; Do not reuse the demo build dependencies in production.</p>
   </footer>
 
-  <script src="vendor/jquery.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

@@ -1,10 +1,10 @@
 # GHAS Me Up
 
-A deliberately vulnerable demo that tells a complete **build-time and runtime** GitHub Advanced
-Security story. One small site on GitHub Pages is built three ways (Node.js, Ruby, Go), every build
-ships stale dependencies, and GitHub finds and fixes them.
+A GitHub Advanced Security demo built three ways (Node.js, Ruby, Go). Each build uses intentionally
+stale dependencies. GitHub Pages serves the generated HTML, CSS, and first-party JavaScript.
 
-> ⚠️ Intentionally insecure. Do not copy this code into anything real. See [SECURITY.md](SECURITY.md).
+> ⚠️ The build code and dependencies are intentionally insecure. Do not reuse them in production.
+> See [SECURITY.md](SECURITY.md).
 
 ## What's in the box
 
@@ -13,9 +13,8 @@ ships stale dependencies, and GitHub finds and fixes them.
 | `node/` | Node build: Markdown + Handlebars → `node/index.html`, publishes jQuery | `package-lock.json`: lodash 4.17.15, handlebars 4.0.11, marked 0.3.5, minimist 1.2.0, jquery 3.4.1 |
 | `ruby/` | Ruby build: kramdown + ERB → `ruby/index.html` | `Gemfile.lock` pins **Ruby 2.7.8** plus kramdown 2.3.0, rack 2.0.8, rexml 3.2.4, addressable 2.7.0, rake 12.3.2 |
 | `go/` | Go build: `html/template` → `go/index.html` | `go.mod` pins **go 1.16** plus x/crypto (2020), x/text 0.3.0, yaml.v2 2.2.2, jwt-go 3.2.0 |
-| `site/` | Static landing page + runtime widget | DOM XSS: `location.hash` → jQuery `.html()` |
-| `.github/workflows/` | Build + deploy, CodeQL, dependency review, PR title lint | Pipeline flaws CodeQL finds in the workflow itself |
-| `.github/dependabot.yml` | Version updates for npm, bundler, gomod, github-actions | |
+| `site/` | Static landing page + greeting widget | The public site renders URL fragments as plain text |
+| `.github/workflows/pages.yml` | Builds the three static pages and deploys to GitHub Pages | Only the rendered HTML and first-party assets are published |
 
 ## GHAS features it exercises
 
@@ -36,7 +35,8 @@ The run of show is in **[DEMO.md](DEMO.md)**.
 2. **Settings → Advanced Security** (or *Code security*): enable Dependency graph, Dependabot alerts,
    Dependabot security updates, Secret scanning and Push protection. Code scanning comes from
    `codeql.yml`. (Private repos need GitHub Code Security / Secret Protection.)
-3. Push to `main`. The workflow builds all three apps and deploys the site.
+3. Push to `main` or run **Build and deploy Pages** from the **Actions** tab on `main`. The workflow
+   publishes all three generated pages to [GitHub Pages](https://epabishai.github.io/ghas-me-up/).
 
 ## Build locally
 

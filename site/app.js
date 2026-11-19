@@ -1,25 +1,23 @@
-/*
- * RUNTIME VULNERABILITY (intentional) — DOM-based cross-site scripting.
- *
- * The visitor's name travels   location.hash  ->  decodeURIComponent  ->  jQuery .html()
- * with no escaping. CodeQL reports this as a DOM XSS data flow, and the site is
- * live on GitHub Pages so the exploit can be shown in the browser:
- *
- *   https://artofthepossible.github.io/ghas-me-up/#<img src=x onerror=alert(document.domain)>
- *
- * Fix (used in the demo's "close the loop" step): $('#greeting').text(...)
- */
 (function () {
   'use strict';
 
+  var greeting = document.getElementById('greeting');
+  var nameInput = document.getElementById('name');
+
   function render() {
-    var name = decodeURIComponent(window.location.hash.slice(1)) || 'friend';
-    $('#greeting').html('Hello, ' + name + '!');
+    var name = window.location.hash.slice(1);
+    try {
+      name = decodeURIComponent(name);
+    } catch (error) {
+      if (!(error instanceof URIError)) throw error;
+      // Display malformed URL fragments as literal text.
+    }
+    greeting.textContent = 'Hello, ' + (name || 'friend') + '!';
   }
 
-  $('#hello-form').on('submit', function (event) {
+  document.getElementById('hello-form').addEventListener('submit', function (event) {
     event.preventDefault();
-    window.location.hash = encodeURIComponent($('#name').val());
+    window.location.hash = encodeURIComponent(nameInput.value);
   });
 
   window.addEventListener('hashchange', render);

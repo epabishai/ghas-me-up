@@ -8,22 +8,16 @@ runtime → GitHub finds all of it → we fix it in a few clicks → we prove th
 - [ ] Repo settings from the README are on (Pages from Actions, Dependabot alerts + security
       updates, secret scanning, push protection).
 - [ ] The first `main` build is green and the site is live at
-      `https://artofthepossible.github.io/ghas-me-up/`.
+      `https://epabishai.github.io/ghas-me-up/`.
 - [ ] CodeQL has finished its first run on `main` (all four languages).
 - [ ] Create a baseline branch so you can reset: `git branch demo/vulnerable-baseline main && git push origin demo/vulnerable-baseline`.
 - [ ] Open tabs: live site, **Security** tab, **Actions** tab.
 
-## 1. The hook — break the live site (3 min)
+## 1. The hook — tour the live site (3 min)
 
 1. Open the site. Three cards, a friendly greeting box. "Looks fine."
-2. Type this into **Your name** and click *Say hello*:
-
-   ```
-   <img src=x onerror=alert(document.domain)>
-   ```
-
-   An alert fires on the Pages origin. **That is the runtime problem.** Nobody installed malware: the
-   page, jQuery and one line of JavaScript did it.
+2. Type a name into **Your name** and click *Say hello*. The public site renders it as plain text
+   and does not load the demo's pinned jQuery.
 3. Open the Node, Ruby and Go cards. Each page lists its pinned versions and a `stamp (md5)`.
    "Three pipelines, three ecosystems. What does GitHub know about them?"
 
@@ -45,10 +39,8 @@ runtime → GitHub finds all of it → we fix it in a few clicks → we prove th
 ## 3. Runtime — code scanning (6 min)
 
 1. **Security → Code scanning.** Filter by language to show JavaScript, Ruby, Go and Actions.
-2. Open the **DOM XSS** alert on `site/app.js`. Click **Show paths**: `location.hash` →
-   `decodeURIComponent` → `.html()`. "This is exactly what we just exploited."
-3. Click **Generate fix** (Copilot Autofix) and read the suggested change. The fix is
-   `.text(...)` instead of `.html(...)`. Commit it to a branch and open a PR.
+2. Contrast the historical greeting implementation on `demo/vulnerable-baseline` with `main`.
+   The baseline treats the URL fragment as HTML; the public site's widget uses `textContent` instead.
 4. Build-time code flaws, one per language (rule names vary by CodeQL version):
    - **JS / Ruby / Go:** MD5 used to hash a password-like value
    - **JS / Ruby:** predictable token from `Math.random()` / `rand`
@@ -71,12 +63,15 @@ runtime → GitHub finds all of it → we fix it in a few clicks → we prove th
 
 ## 6. Close the loop (3 min)
 
-1. Merge the Dependabot security PR and the Autofix PR. *Build and deploy* redeploys the site.
-2. Retry the XSS payload. It now renders as text.
+1. Merge the Dependabot security PR. *Build and deploy Pages* redeploys the site.
+2. Reopen the live site and check that the updated dependency appears on its build page.
 3. **Security → Dependabot:** that alert is closed automatically; the remaining ones are your backlog.
 4. Close with the overview: *Security → Overview* shows the whole picture across the org.
 
 ## Resetting for the next run
+
+The original baseline predates the Pages workflow. Resetting `main` to it removes the workflow
+from `main`; restore the Pages changes before deploying the public site again.
 
 ```bash
 git checkout main
