@@ -16,25 +16,25 @@ stale dependencies. GitHub Pages serves the generated HTML, CSS, and first-party
 | `site/` | Static landing page + greeting widget | The public site renders URL fragments as plain text |
 | `.github/workflows/pages.yml` | Builds the three static pages and deploys to GitHub Pages | Only the rendered HTML and first-party assets are published |
 
-## GHAS features it exercises
+## Security demo scope
 
-| Feature | Where it shows up |
-|---------|-------------------|
-| Dependency graph + **Dependabot alerts** | Three ecosystems, dozens of advisories |
-| **Dependabot security updates** | One-click fix PRs for each alert |
-| **Dependabot version updates** | Stale Actions and libraries |
-| **Code scanning (CodeQL)** | JS (DOM XSS, weak hashing, insecure randomness), Ruby, Go (weak hash, hard-coded JWT key, disabled TLS verification), Actions (script injection, missing permissions) |
-| **Dependency review** | Blocks PRs that add vulnerable packages |
-| **Secret scanning + push protection** | Live in the demo script |
+The Node, Ruby, and Go pages show representative dependency-advisory examples for pinned
+packages. These are not a live alert feed and do not prove application exploitability. Check the
+repository's Security tab for current alert state and severity. This repository has no CodeQL
+workflow; code-scanning coverage could not be verified in the reviewed snapshot.
 
-The run of show is in **[DEMO.md](DEMO.md)**.
+The pages offer before/after views, but this repository has no protected server integration for
+agentic autofix. The action explicitly reports that it cannot run; it does not change files or
+claim that a finding was resolved. GitHub Pages must not be given credentials for repository
+mutations. See **[DEMO.md](DEMO.md)** for the integration boundary and safe walkthrough.
 
 ## One-time repository setup
 
 1. **Settings → Pages → Source: GitHub Actions**
 2. **Settings → Advanced Security** (or *Code security*): enable Dependency graph, Dependabot alerts,
-   Dependabot security updates, Secret scanning and Push protection. Code scanning comes from
-   `codeql.yml`. (Private repos need GitHub Code Security / Secret Protection.)
+   Dependabot security updates, Secret scanning and Push protection. Configure CodeQL separately if
+   desired and verify completed analyses in the Security tab. (Private repos need GitHub Code
+   Security / Secret Protection.)
 3. Push to `main` or run **Build and deploy Pages** from the **Actions** tab on `main`. The workflow
    publishes all three generated pages to [GitHub Pages](https://epabishai.github.io/ghas-me-up/).
 

@@ -74,3 +74,11 @@ th { color: var(--muted); font-weight: 600; font-size: 0.8rem; text-transform: u
 td:nth-child(2) { font-family: ui-monospace, Menlo, monospace; color: #d29922; }
 tr:last-child td { border-bottom: 0; }
 .note { border-left: 4px solid #d29922; background: #1f1a0e; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; color: var(--muted); }
+.security-demo { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+.demo-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 1rem 0; }
+.demo-actions button { background: #30363d; border: 1px solid #8b949e; }
+.finding-view { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.25rem; margin: 1rem 0; }
+.finding-view h3 { margin-top: 0; }
+.finding-view li { margin: 0.5rem 0; }
+.autofix-status { color: #d29922; font-weight: 600; }
+[hidden] { display: none !important; }
