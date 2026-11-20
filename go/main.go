@@ -45,6 +45,15 @@ func statusCode(url string) (int, error) {
 	return resp.StatusCode, nil
 }
 
+func logStatusCheck(url string) {
+	code, err := statusCode(url)
+	if err != nil {
+		log.Print("status check failed")
+		return
+	}
+	log.Printf("status check -> %d", code)
+}
+
 type config struct {
 	Title  string `yaml:"title"`
 	Accent string `yaml:"accent"`
@@ -77,8 +86,7 @@ func main() {
 
 	// Optional: only runs when a status URL is provided.
 	if url := os.Getenv("GHAS_STATUS_URL"); url != "" {
-		code, err := statusCode(url)
-		log.Printf("status check %s -> %d (err=%v)", url, code, err)
+		logStatusCheck(url)
 	}
 
 	var modules []module
