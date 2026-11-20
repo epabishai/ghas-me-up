@@ -1,11 +1,9 @@
 # Security policy
 
-**This repository is an intentionally vulnerable demo.** It exists to show GitHub Advanced
-Security finding problems in dependencies, source code and CI pipelines.
+This repository demonstrates GitHub Advanced Security across three build pipelines.
 
-- Dependencies are pinned to old releases with known advisories on purpose.
-- The code contains deliberate flaws (see `DEMO.md`).
-- Nothing here holds real credentials, user data or production workloads.
+Dependencies and source code should be kept current and reviewed for vulnerabilities.
+The [security review](SECURITY-REVIEW.md) records a historical snapshot of the demo
+findings and its coverage limits; it is not a live alert list.
 
-If you find a vulnerability that is **not** listed in `DEMO.md`, please open a private
-security advisory on this repository.
+If you find a vulnerability, please open a private security advisory on this repository.

@@ -13,7 +13,7 @@
     <div class="meta">
       <span>Ruby <%= h.call(ruby_version) %></span>
       <span>built <%= h.call(built_at) %></span>
-      <span>stamp (md5) <%= h.call(BUILD_STAMP) %></span>
+      <span>stamp (sha256) <%= h.call(BUILD_STAMP) %></span>
       <span>preview token <%= h.call(PREVIEW_TOKEN) %></span>
     </div>
 
@@ -28,7 +28,7 @@
       </tbody>
     </table>
 
-    <p class="note">Intentionally outdated. Source:
+    <p class="note">Source:
       <a href="<%= h.call(source_url) %>">ruby/</a>. See
       <strong>Security &rarr; Dependabot</strong> on GitHub.</p>
 

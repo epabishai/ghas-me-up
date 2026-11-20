@@ -3,11 +3,10 @@
 # Ruby build for the GHAS Me Up demo.
 # Renders ruby/index.html from Markdown (kramdown) + ERB.
 #
-# Gems in Gemfile.lock and the Ruby version are pinned to old releases on purpose.
-
 require 'erb'
 require 'digest'
 require 'fileutils'
+require 'securerandom'
 require 'time'
 require 'kramdown'
 require 'rack'
@@ -16,17 +15,8 @@ require 'addressable/uri'
 ROOT = __dir__
 OUT_DIR = File.expand_path(ARGV[0] || '../dist', ROOT)
 
-# ---------------------------------------------------------------------------
-# BUILD-TIME FLAWS (intentional) — expect CodeQL findings on the next two lines
-# ---------------------------------------------------------------------------
-DEPLOY_PASSWORD = 'correct-horse-battery-demo'
-
-# Weak hash (MD5) of a password-like value.
-BUILD_STAMP = Digest::MD5.hexdigest(DEPLOY_PASSWORD)[0, 8]
-
-# Predictable token from Kernel#rand.
-PREVIEW_TOKEN = rand(36**10).to_s(36)
-# ---------------------------------------------------------------------------
+BUILD_STAMP = Digest::SHA256.file(__FILE__).hexdigest[0, 8]
+PREVIEW_TOKEN = SecureRandom.hex(16)
 
 def h(value)
   Rack::Utils.escape_html(value.to_s)
