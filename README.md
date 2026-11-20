@@ -1,18 +1,15 @@
 # GHAS Me Up
 
-A GitHub Advanced Security demo built three ways (Node.js, Ruby, Go). Each build uses intentionally
-stale dependencies. GitHub Pages serves the generated HTML, CSS, and first-party JavaScript.
-
-> ⚠️ The build code and dependencies are intentionally insecure. Do not reuse them in production.
-> See [SECURITY.md](SECURITY.md).
+A GitHub Advanced Security demo built three ways (Node.js, Ruby, Go). GitHub Pages serves the
+generated HTML, CSS, and first-party JavaScript. See [SECURITY.md](SECURITY.md).
 
 ## What's in the box
 
-| Path | What it is | The stale part |
+| Path | What it is | Dependencies |
 |------|------------|----------------|
-| `node/` | Node build: Markdown + Handlebars → `node/index.html`, publishes jQuery | `package-lock.json`: lodash 4.17.15, handlebars 4.0.11, marked 0.3.5, minimist 1.2.0, jquery 3.4.1 |
-| `ruby/` | Ruby build: kramdown + ERB → `ruby/index.html` | `Gemfile.lock` pins **Ruby 2.7.8** plus kramdown 2.3.0, rack 2.0.8, rexml 3.2.4, addressable 2.7.0, rake 12.3.2 |
-| `go/` | Go build: `html/template` → `go/index.html` | `go.mod` pins **go 1.16** plus x/crypto (2020), x/text 0.3.0, yaml.v2 2.2.2, jwt-go 3.2.0 |
+| `node/` | Node build: Markdown + Handlebars → `node/index.html`, publishes jQuery | `package-lock.json` |
+| `ruby/` | Ruby build: kramdown + ERB → `ruby/index.html` | Ruby 3.4 and `Gemfile.lock` |
+| `go/` | Go build: `html/template` → `go/index.html` | Go 1.26, `go.mod`, and `go.sum` |
 | `site/` | Static landing page + greeting widget | The public site renders URL fragments as plain text |
 | `.github/workflows/pages.yml` | Builds the three static pages and deploys to GitHub Pages | Only the rendered HTML and first-party assets are published |
 
@@ -20,10 +17,10 @@ stale dependencies. GitHub Pages serves the generated HTML, CSS, and first-party
 
 | Feature | Where it shows up |
 |---------|-------------------|
-| Dependency graph + **Dependabot alerts** | Three ecosystems, dozens of advisories |
+| Dependency graph + **Dependabot alerts** | Dependency advisories across three ecosystems |
 | **Dependabot security updates** | One-click fix PRs for each alert |
 | **Dependabot version updates** | Stale Actions and libraries |
-| **Code scanning (CodeQL)** | JS (DOM XSS, weak hashing, insecure randomness), Ruby, Go (weak hash, hard-coded JWT key, disabled TLS verification), Actions (script injection, missing permissions) |
+| **Code scanning (CodeQL)** | Configure analysis to inspect supported source and workflows |
 | **Dependency review** | Blocks PRs that add vulnerable packages |
 | **Secret scanning + push protection** | Live in the demo script |
 
@@ -33,23 +30,27 @@ The run of show is in **[DEMO.md](DEMO.md)**.
 
 1. **Settings → Pages → Source: GitHub Actions**
 2. **Settings → Advanced Security** (or *Code security*): enable Dependency graph, Dependabot alerts,
-   Dependabot security updates, Secret scanning and Push protection. Code scanning comes from
-   `codeql.yml`. (Private repos need GitHub Code Security / Secret Protection.)
+   Dependabot security updates, Secret scanning and Push protection. Configure CodeQL separately
+   if code scanning is needed. (Private repos need GitHub Code Security / Secret Protection.)
 3. Push to `main` or run **Build and deploy Pages** from the **Actions** tab on `main`. The workflow
    publishes all three generated pages to [GitHub Pages](https://epabishai.github.io/ghas-me-up/).
 
 ## Build locally
 
 ```bash
-# Node
-cd node && npm ci && npm run build            # -> ../dist/node, ../dist/vendor
+# Node (requires an authenticated gh-cfs installation)
+(cd node && gh cfs -- npm ci && npm run build)  # -> dist/node, dist/vendor
 
-# Ruby (needs Ruby 2.7.8 to match the lockfile)
-cd ruby && bundle install && bundle exec rake build   # -> ../dist/ruby
+# Ruby (requires Ruby 3.4)
+(cd ruby && bundle install && bundle exec rake build)  # -> dist/ruby
 
-# Go (first run generates go.sum)
-cd go && go mod tidy && go run . -out ../dist  # -> ../dist/go
+# Go (requires Go 1.26)
+(cd go && go run -mod=readonly . -out ../dist)  # -> dist/go
 
 # Assemble and serve
 cp -R site/. dist/ && python3 -m http.server -d dist 8000
 ```
+
+Local npm installs use the authenticated GitHub CFS feed through `gh cfs`.
+The public repository's CI uses the public npm registry; Ruby and Go use
+RubyGems and the public Go module proxy.

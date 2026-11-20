@@ -3,9 +3,7 @@
 /*
  * Node.js build for the GHAS Me Up demo.
  * Renders node/index.html from Markdown (marked) + a Handlebars template and
- * publishes the jQuery build used by the runtime widget on the landing page.
- *
- * Dependencies in package.json are pinned to old, vulnerable releases on purpose.
+ * publishes a jQuery build.
  */
 
 const fs = require('fs');
@@ -13,25 +11,15 @@ const path = require('path');
 const crypto = require('crypto');
 const _ = require('lodash');
 const Handlebars = require('handlebars');
-const marked = require('marked');
+const { marked } = require('marked');
 const minimist = require('minimist');
 const pkg = require('./package.json');
 
 const args = minimist(process.argv.slice(2), { string: ['out'], default: { out: '../dist' } });
 const outDir = path.resolve(__dirname, args.out);
 
-// ---------------------------------------------------------------------------
-// BUILD-TIME FLAWS (intentional) — expect CodeQL findings on the next two blocks
-// ---------------------------------------------------------------------------
-const DEPLOY_PASSWORD = 'correct-horse-battery-demo';
-
-// Weak hash (MD5) of a password-like value -> insufficient password hashing.
-const buildStamp = crypto.createHash('md5').update(DEPLOY_PASSWORD).digest('hex').slice(0, 8);
-
-// Predictable token from Math.random() -> insecure randomness.
-const previewToken = Math.random().toString(36).slice(2);
-
-// ---------------------------------------------------------------------------
+const buildStamp = crypto.createHash('sha256').update(fs.readFileSync(__filename)).digest('hex').slice(0, 8);
+const previewToken = crypto.randomBytes(16).toString('hex');
 
 const markdown = `
 ## Built with Node.js
@@ -68,7 +56,7 @@ const html = template({
 fs.mkdirSync(path.join(outDir, 'node'), { recursive: true });
 fs.writeFileSync(path.join(outDir, 'node', 'index.html'), html);
 
-// Ship the (vulnerable) jQuery that the landing page's runtime widget depends on.
+// Ship the pinned jQuery distribution alongside the generated page.
 fs.mkdirSync(path.join(outDir, 'vendor'), { recursive: true });
 fs.copyFileSync(
   require.resolve('jquery/dist/jquery.min.js'),

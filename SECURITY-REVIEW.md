@@ -1,13 +1,13 @@
 # Three-app security review
 
-Snapshot: November 19, 2026. The Node, Ruby, and Go applications generate static
-pages at build time. Their insecure code and dependencies are intentional demo
-material and must not be reused in production.
+Historical snapshot: November 19, 2026, before remediation. The Node, Ruby, and
+Go applications generate static pages at build time. At the time of this review,
+their insecure code and dependencies were intentional demo material.
 
 ## Agent-authored code findings
 
 These are source patterns identified in a local review, not GitHub code-scanning
-alerts. Each is an intentional build-time demo flaw; exploitability has not been
+alerts. Each was an intentional build-time demo flaw; exploitability was not
 demonstrated. Severity is a review classification, not a verified impact.
 
 | Severity | Location | Finding and context |

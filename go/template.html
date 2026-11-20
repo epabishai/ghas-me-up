@@ -14,15 +14,14 @@
       <span>{{.GoVersion}}</span>
       <span>locale {{.Locale}}</span>
       <span>built {{.BuiltAt}}</span>
-      <span>stamp (md5) {{.BuildStamp}}</span>
-      <span>bcrypt verified: {{.BcryptOK}}</span>
+      <span>stamp (sha256) {{.BuildStamp}}</span>
     </div>
 
     <h2>Built with Go</h2>
     <p>This page was generated at <strong>build time</strong> by <code>go/main.go</code> using
-      <code>html/template</code>, yaml.v2, x/crypto, x/text and jwt-go.</p>
+      <code>html/template</code>, yaml.v2 and x/text.</p>
     <p>The table lists the modules linked into the build, pinned by <code>go.mod</code>
-      (<code>go 1.16</code>). Open the repository's <strong>Security</strong> tab to see what
+      (<code>go 1.26</code>). Open the repository's <strong>Security</strong> tab to see what
       Dependabot found.</p>
 
     <table>
@@ -34,7 +33,7 @@
       </tbody>
     </table>
 
-    <p class="note">Intentionally outdated. See <strong>Security &rarr; Dependabot</strong> on GitHub.</p>
+    <p class="note">See <strong>Security &rarr; Dependabot</strong> on GitHub.</p>
   </div>
 </body>
 </html>

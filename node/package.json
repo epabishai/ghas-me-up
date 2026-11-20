@@ -2,18 +2,18 @@
   "name": "ghas-me-up-node",
   "version": "1.0.0",
   "private": true,
-  "description": "Node.js build for the GHAS Me Up demo. Dependencies are intentionally stale.",
+  "description": "Node.js build for the GHAS Me Up demo.",
   "scripts": {
     "build": "node build.js --out ../dist"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22.12"
   },
   "dependencies": {
-    "handlebars": "4.0.11",
-    "jquery": "3.4.1",
-    "lodash": "4.17.15",
-    "marked": "0.3.5",
-    "minimist": "1.2.0"
+    "handlebars": "4.7.10",
+    "jquery": "3.7.1",
+    "lodash": "4.18.1",
+    "marked": "18.2.0",
+    "minimist": "1.2.8"
   }
 }
