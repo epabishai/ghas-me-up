@@ -30,6 +30,37 @@
 
     <p class="note">Intentionally outdated. Run <code>npm audit</code> locally, or open
       <strong>Security &rarr; Dependabot</strong> on GitHub.</p>
+
+    <section class="security-demo" aria-labelledby="security-demo-title">
+      <h2 id="security-demo-title">Security findings demo</h2>
+      <p>These are advisory examples associated with pinned dependencies, not verified
+        application vulnerabilities. Current alert status and severity must be checked in
+        the repository's <a href="https://github.com/epabishai/ghas-me-up/security/dependabot">Dependabot alerts</a>.</p>
+      <div class="demo-actions">
+        <button type="button" data-show="before-node" aria-expanded="false">Show vulnerabilities / Before autofix</button>
+        <button type="button" data-show="after-node" aria-expanded="false">After autofix</button>
+        <button type="button" data-autofix>Run agentic autofix</button>
+      </div>
+      <div id="before-node" class="finding-view" hidden>
+        <h3>Before autofix · Node.js</h3>
+        <p>Illustrative dependency advisories; they do not establish reachability or exploitability.</p>
+        <ul>
+          <li><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-23337">lodash 4.17.15 · CVE-2021-23337</a> — <code>node/package-lock.json</code></li>
+          <li><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-44906">minimist 1.2.0 · CVE-2021-44906</a> — <code>node/package-lock.json</code></li>
+          <li><a href="https://nvd.nist.gov/vuln/detail/CVE-2020-11022">jQuery 3.4.1 · CVE-2020-11022</a> — <code>node/package-lock.json</code></li>
+        </ul>
+        <p>Severity and whether these alerts remain open are not available in this static page.
+          No source-code finding or affected runtime behavior has been verified. Manual triage
+          in GitHub is required.</p>
+      </div>
+      <div id="after-node" class="finding-view" hidden>
+        <h3>After autofix · Node.js</h3>
+        <p>No autofix was run and no files changed. These pinned versions and advisory examples
+          remain unverified; this page cannot report a resolution.</p>
+      </div>
+      <p class="autofix-status" role="status" aria-live="polite"></p>
+    </section>
   </div>
+  <script src="../app.js"></script>
 </body>
 </html>
